@@ -4,6 +4,9 @@ import time
 
 def main():
     with Database() as db:
+        # Initializing tokens
+        db.initialize_tokens()
+        
         bot = TradingBot(db)
 
         for _ in range(5):  # Run 5 cycles for demonstration

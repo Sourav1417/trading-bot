@@ -13,6 +13,14 @@ class Database:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
 
+    def initialize_tokens(self):
+        self.cur.execute("""
+            INSERT INTO tokens (token_symbol, token_name)
+            VALUES ('HERO', 'Hero Token'), ('SOL', 'Solana')
+            ON CONFLICT (token_symbol) DO NOTHING
+        """)
+        self.conn.commit()
+
     def add_wallet(self, wallet_address, is_hero_only):
         self.cur.execute(
             "INSERT INTO wallets (wallet_address, is_hero_only) VALUES (%s, %s) ON CONFLICT (wallet_address) DO UPDATE SET is_hero_only = EXCLUDED.is_hero_only",
